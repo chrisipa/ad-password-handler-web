@@ -16,13 +16,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <registry>docker.io</registry>
+        <tenant>chrisipa</tenant>
+        <opt.folder>/opt</opt.folder>
+        <catalina.home>${opt.folder}/tomcat</catalina.home>
+        <tomcat.webapps.folder>${catalina.home}/webapps</tomcat.webapps.folder>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.1.RELEASE</version>
-        <relativePath/>
     </parent>
 
     <dependencies>
@@ -81,6 +85,85 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <registry>${registry}</registry>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/tomcat:7.0.70</from>
+                                <optimise>true</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>catalina.sh</args>
+                                        <args>run</args>
+                                    </exec>
+                                </cmd>
+                                <runCmds>
+                                    <!-- install smbpasswd -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install --no-install-recommends -y samba-common-bin</run>
+                                    <run>apt-get clean</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${project.groupId}:${project.artifactId}:${project.packaging}</include>
+                                                </includes>
+                                                <outputDirectory>${tomcat.webapps.folder}/${project.artifactId}</outputDirectory>
+                                                <unpack>true</unpack>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/docker/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/docker/ROOT</directory>
+                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>8080:8080</port>
+                                    <port>8443:8443</port>
+                                </ports>
+                                <env>
+                                    <AD_SERVER_HOST>my.ad.server.host</AD_SERVER_HOST>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
             </plugin>
         </plugins>
     </build>
