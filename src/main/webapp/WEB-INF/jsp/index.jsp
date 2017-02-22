@@ -14,13 +14,13 @@
     <script src="<c:url value="/jquery/jquery.mobile-1.4.2.min.js" />"></script>
     <script src="<c:url value="/jquery/jquery.i18n.properties.js" />"></script>
     <script src="<c:url value="/jquery/jquery.textchange.min.js" />"></script>
-    <script src="<c:url value="/ad-password-handler-web/ad-password-handler-web.js" />"></script>
+    <script src="<c:url value="/app/app.js" />"></script>
 
     <script type="text/javascript">
         var Settings = {
             name : '${name}',
             version : '${version}',
-            bundlePath : '<c:url value="/ad-password-handler-web/bundle/" />'
+            bundlePath : '<c:url value="/app/bundle/" />'
         };
     </script>
 </head>

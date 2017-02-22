@@ -46,7 +46,7 @@ AdPasswordHandlerWeb = (function () {
 		
 		header.after(content);
 		
-		var passwordChangeForm = $("<form id='pw-change'></form>");
+		var passwordChangeForm = $("<form id='pwchange'></form>");
 		passwordChangeForm.append($("<input type='text' id='username' />").attr("Placeholder", $.i18n.prop("input.username.label")));
 		passwordChangeForm.append($("<input type='password' id='password' />").attr("Placeholder", $.i18n.prop("input.password.label")));
 		passwordChangeForm.append($("<input type='password' id='newPassword' />").attr("Placeholder", $.i18n.prop("input.new.password.label")));
@@ -59,7 +59,7 @@ AdPasswordHandlerWeb = (function () {
 			$.ajax({
 				type: "POST",
 				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				url: "pw-change",
+				url: "pwchange",
 				data: {
 					"username": $("#username").val(),
 					"password": $("#password").val(),

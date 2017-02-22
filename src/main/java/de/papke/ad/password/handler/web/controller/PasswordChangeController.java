@@ -28,7 +28,7 @@ public class PasswordChangeController {
         return "index";
     }
 
-    @PostMapping("/pw-change")
+    @PostMapping("/pwchange")
     public ResponseEntity<String> passwordSubmit(@ModelAttribute Credentials credentials) {
 
         boolean success = passwordChangeService.changePassword(credentials.getUsername(), credentials.getPassword(), credentials.getNewPassword());
