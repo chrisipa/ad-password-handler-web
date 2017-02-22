@@ -12,23 +12,23 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class Main extends SpringBootServletInitializer {
 
-	/**
-	 * Method for configuring spring boot application
-	 *
-	 * @param application
-	 * @return
-	 */
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Main.class);
-	}
+    /**
+     * Method for configuring spring boot application
+     *
+     * @param application
+     * @return
+     */
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Main.class);
+    }
 
-	/**
-	 * Main method
-	 *
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(Main.class, args); //NOSONAR
-	}
+    /**
+     * Main method
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args); //NOSONAR
+    }
 }

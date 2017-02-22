@@ -33,7 +33,7 @@ public class PasswordChangeController {
 
         boolean success = passwordChangeService.changePassword(credentials.getUsername(), credentials.getPassword(), credentials.getNewPassword());
 
-        ResponseEntity<String> responseEntity = null;
+        ResponseEntity<String> responseEntity;
         if (success) {
             responseEntity = ResponseEntity.status(HttpStatus.OK).build();
         }
