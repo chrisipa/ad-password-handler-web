@@ -7,8 +7,6 @@
     <artifactId>ad-password-handler-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <!-- TODO: Try to implement jar packaging -->
-    <!-- http://stackoverflow.com/questions/21243690/is-it-possible-with-spring-boot-to-serve-up-jsps-with-a-jar-packaging -->
     <packaging>war</packaging>
 
     <name>AD Password Handler Web</name>
