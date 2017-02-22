@@ -1,8 +1,8 @@
 package de.papke.ad.password.handler.web.controller;
 
 import de.papke.ad.password.handler.web.maven.MavenProperties;
-import de.papke.ad.password.handler.web.service.PasswordChangeService;
 import de.papke.ad.password.handler.web.model.Credentials;
+import de.papke.ad.password.handler.web.service.PasswordChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

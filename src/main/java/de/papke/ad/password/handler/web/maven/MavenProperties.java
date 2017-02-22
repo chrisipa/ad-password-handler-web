@@ -1,5 +1,7 @@
 package de.papke.ad.password.handler.web.maven;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +14,9 @@ import java.util.ResourceBundle;
  */
 @Component
 public class MavenProperties {
-	
+
+	private static final Logger LOG = LoggerFactory.getLogger(MavenProperties.class);
+
 	private ResourceBundle resourceBundle;
 
 	@PostConstruct
@@ -21,7 +25,7 @@ public class MavenProperties {
 			this.resourceBundle = ResourceBundle.getBundle("maven");
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 	}
 	
