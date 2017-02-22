@@ -8,8 +8,6 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <link rel="shortcut icon" href="<c:url value="/ad-password-handler-web/favicon.ico" />" type="image/x-icon" />
-
     <link rel="stylesheet" href="<c:url value="/jquery/jquery.mobile-1.4.2.min.css" />" />
 
     <script src="<c:url value="/jquery/jquery-1.9.1.min.js" />"></script>

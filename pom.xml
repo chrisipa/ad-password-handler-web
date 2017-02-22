@@ -119,6 +119,9 @@
                                     <run>apt-get update</run>
                                     <run>apt-get install --no-install-recommends -y samba-common-bin</run>
                                     <run>apt-get clean</run>
+
+                                    <!-- remove default index.jsp from ROOT webapp -->
+                                    <run>rm $TOMCAT_WEBAPPS_FOLDER/ROOT/index.jsp</run>
                                 </runCmds>
                                 <assembly>
                                     <basedir>/</basedir>
@@ -128,7 +131,7 @@
                                                 <includes>
                                                     <include>${project.groupId}:${project.artifactId}:${project.packaging}</include>
                                                 </includes>
-                                                <outputDirectory>${tomcat.webapps.folder}/${project.artifactId}</outputDirectory>
+                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
                                                 <unpack>true</unpack>
                                             </dependencySet>
                                         </dependencySets>
@@ -136,13 +139,6 @@
                                             <fileSet>
                                                 <directory>${project.basedir}/src/main/resources/docker/entrypoint</directory>
                                                 <outputDirectory>/</outputDirectory>
-                                                <includes>
-                                                    <include>**/*</include>
-                                                </includes>
-                                            </fileSet>
-                                            <fileSet>
-                                                <directory>${project.basedir}/src/main/resources/docker/ROOT</directory>
-                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
                                                 <includes>
                                                     <include>**/*</include>
                                                 </includes>
