@@ -69,8 +69,12 @@ public class PasswordChangeService {
         try {
 
             // get sAMAccountName if email is entered
+            String accountName = null;
             if (username.contains(EMAIL_IDENTIFIER)) {
-                username = activeDirectoryService.getSAMAccountName(username);
+                accountName = activeDirectoryService.getSAMAccountName(username);
+            }
+            else {
+                accountName = username;
             }
 
             // write out change password script as temp file
@@ -78,7 +82,7 @@ public class PasswordChangeService {
 
             // generate command line for change password script
             CommandLine cmdLine = new CommandLine(scriptFile);
-            cmdLine.addArgument(username);
+            cmdLine.addArgument(accountName);
             cmdLine.addArgument(adServerHost);
             cmdLine.addArgument(password);
             cmdLine.addArgument(newPassword);

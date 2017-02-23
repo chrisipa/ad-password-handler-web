@@ -57,7 +57,7 @@ public class ActiveDirectoryService {
         return sAMAccountName;
     }
 
-    private LDAPConnection getLdapConnection() throws Exception {
+    private LDAPConnection getLdapConnection() throws LDAPException {
         return new LDAPConnection(host, port, userDn, userSecret);
     }
 }
