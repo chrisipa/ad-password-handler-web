@@ -5,6 +5,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,13 @@ public class PasswordChangeService {
 
     private static final String SCRIPT_FILE_PREFIX = "change_password";
     private static final String SCRIPT_FILE_SUFFIX = ".sh";
+    private static final String EMAIL_IDENTIFIER = "@";
 
     @Value("${ad.server.host}")
     private String adServerHost;
+
+    @Autowired
+    private ActiveDirectoryService activeDirectoryService;
 
     public File createScriptFile() {
 
@@ -62,6 +67,11 @@ public class PasswordChangeService {
         File scriptFile = null;
 
         try {
+
+            // get sAMAccountName if email is entered
+            if (username.contains(EMAIL_IDENTIFIER)) {
+                username = activeDirectoryService.getSAMAccountName(username);
+            }
 
             // write out change password script as temp file
             scriptFile = createScriptFile();
