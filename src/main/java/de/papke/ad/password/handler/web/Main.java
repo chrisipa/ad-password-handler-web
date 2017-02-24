@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 /**
  * Main class of scripting console application.
  */
 @SpringBootApplication
+@EnableScheduling
 public class Main extends SpringBootServletInitializer {
 
     /**

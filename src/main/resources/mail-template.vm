@@ -1,0 +1,8 @@
+<html>
+<body>
+<h3>Your Active Directory password will expire</h3>
+<p>Hello ${name},<br /><br />your Active Directory password will expire in ${days} days.</p>
+<p>Please use this url to change it:<br /><br /><a href="${url}">${url}</a></p>
+<p><br />Best regards<br /><br />Your Active Directory Administrator</p>
+</body>
+</html>
