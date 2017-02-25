@@ -1,5 +1,7 @@
 package de.papke.ad.password.handler.web.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -19,6 +21,8 @@ import java.util.Properties;
  */
 @Service
 public class MailService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     @Value("${mail.protocol}")
     private String protocol;
@@ -84,6 +88,9 @@ public class MailService {
      * @param variableMap - variable map for substitution
      */
     public void send(String to, Map variableMap) {
+
+        // logging
+        LOG.info("Sending mail from '{}' to address '{}' with subject '{}'", from, to, subject);
 
         // create mime message preparator
         MimeMessagePreparator preparator = new MimeMessagePreparator() {

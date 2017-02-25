@@ -90,6 +90,9 @@ public class PasswordChangeService {
 
         try {
 
+            // logging
+            LOG.info("Changing active directory password for user '{}'", username);
+
             // get sAMAccountName if email is entered
             String accountName = null;
             if (username.contains(EMAIL_IDENTIFIER)) {

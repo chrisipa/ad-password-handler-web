@@ -38,9 +38,12 @@ public class PasswordExpirationService {
     private ActiveDirectoryService activeDirectoryService;
 
     @Scheduled(cron = "${password.expiration.cron.expression}")
-    public void getDaysTillPasswordExpires() {
+    public void sendPasswordExpiresMails() {
 
         try {
+
+            // logging
+            LOG.info("Starting to send password expires mails");
 
             // get current timestamp
             long now = System.currentTimeMillis();
@@ -62,6 +65,9 @@ public class PasswordExpirationService {
 
                     // check if sAMAccountName is set
                     if (!StringUtils.isEmpty(sAMAccountName)) {
+
+                        // logging
+                        LOG.info("Checking if password will expire for user with sAMAccountName '{}'", sAMAccountName);
 
                         // get timestamp of last password change
                         long pwdLastSet = activeDirectoryService.getPasswordLastSet(sAMAccountName);
