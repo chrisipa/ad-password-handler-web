@@ -33,7 +33,7 @@ public class VelocityService {
      * Method for initializing the velocity engine.
      */
     @PostConstruct
-    private void init() {
+    public void init() {
 
         // create velocity engine
         velocityEngine = new VelocityEngine();
