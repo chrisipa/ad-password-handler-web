@@ -35,13 +35,14 @@ Usage
     environment:
       - TZ=Europe/Berlin
       - ad.server.host=my-mail-server-hostname-or-ip
-      - ad.server.port=25
+      - ad.server.port=389
       - ad.server.base.dn=DC=my,DC=domain,DC=grp
       - ad.server.user.dn=CN=Name,OU=Group,OU=Users,OU=Organisation,DC=my,DC=domain,DC=grp
       - ad.server.user.secret=Password
       - application.url=http://my-app-url.com
       - mail.from=test@test.com
       - mail.host=my-mail-server-hostname-or-ip
+      - mail.port=25
       - mail.send=true
       - password.expiration.cron.expression=0 0 0 * * ?
       - password.expiration.days.till.expires=14
