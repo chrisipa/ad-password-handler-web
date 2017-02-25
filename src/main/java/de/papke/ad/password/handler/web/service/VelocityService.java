@@ -55,6 +55,9 @@ public class VelocityService {
 
         try {
 
+            // logging
+            LOG.info("Evaluating velocity template with path '{}' and variable map '{}'", templatePath, variableMap);
+
             // create velocity context and string writer
             VelocityContext velocityContext = new VelocityContext(variableMap);
             StringWriter stringWriter = new StringWriter();

@@ -84,6 +84,9 @@ public class PasswordExpirationService {
                             // send mail if password expires soon
                             if (passwordDaysTillExpires <= daysTillExpires) {
 
+                                // logging
+                                LOG.info("Password expiration warning for user with sAMAccountName '{}'", sAMAccountName);
+
                                 // create variable map for substitution
                                 Map<String, Object> variableMap = new HashMap<>();
                                 variableMap.put("name", user.getName());

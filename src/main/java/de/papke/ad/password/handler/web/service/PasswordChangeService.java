@@ -46,8 +46,13 @@ public class PasswordChangeService {
 
         try {
 
-            // write out script file
+            // get script file path
             String scriptFilePath = "/" + SCRIPT_FILE_PREFIX + SCRIPT_FILE_SUFFIX;
+
+            // logging
+            LOG.info("Creating script file with path '{}'", scriptFilePath);
+
+            // write out script file
             InputStream is = getClass().getResourceAsStream(scriptFilePath);
             scriptFile = File.createTempFile(SCRIPT_FILE_PREFIX, SCRIPT_FILE_SUFFIX);
             fout = new FileOutputStream(scriptFile);

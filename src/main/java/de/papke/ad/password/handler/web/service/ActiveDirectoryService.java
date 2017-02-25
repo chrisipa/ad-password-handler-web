@@ -215,6 +215,9 @@ public class ActiveDirectoryService {
 
         try {
 
+            // logging
+            LOG.info("exceuting LDAP query with baseDn '{}', search scope '{}', filter '{}', attributes '{}' and paging '{}'", baseDn, searchScope, filter, attributes, paging);
+
             // get connection to LDAP server
             connection = getLdapConnection();
 
