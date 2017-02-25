@@ -54,6 +54,9 @@ public class MailService {
     @Value("${mail.subject}")
     private String subject;
 
+    @Value("${mail.send}")
+    private boolean send;
+
     private JavaMailSenderImpl mailSender;
 
     @Autowired
@@ -111,6 +114,8 @@ public class MailService {
         };
 
         // send HTML mail
-        mailSender.send(preparator);
+        if (send) {
+            mailSender.send(preparator);
+        }
     }
 }
