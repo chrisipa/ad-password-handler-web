@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * Controller class for changing the password of an active director user.
+ *
+ * @author Christoph Papke (info@papke.it)
+ */
 @Controller
 public class PasswordChangeController {
 
@@ -21,18 +26,36 @@ public class PasswordChangeController {
     @Autowired
     private PasswordChangeService passwordChangeService;
 
+    /**
+     * Method for creating model and view for index page
+     *
+     * @param model - model for spring mvc
+     * @return view name
+     */
     @GetMapping("/")
-    public String passwordForm(Model model) {
+    public String index(Model model) {
+
+        // add maven properties to model object
         model.addAttribute("name", mavenProperties.get("name"));
         model.addAttribute("version", mavenProperties.get("version"));
+
+        // return view name
         return "index";
     }
 
+    /**
+     * Method for chaning the password of an active directory user.
+     *
+     * @param credentials - the user credentials
+     * @return HTTP status code as response entity
+     */
     @PostMapping("/pwchange")
-    public ResponseEntity<String> passwordSubmit(@ModelAttribute Credentials credentials) {
+    public ResponseEntity<String> changePassword(@ModelAttribute Credentials credentials) {
 
+        // change password with the given credentials
         boolean success = passwordChangeService.changePassword(credentials.getUsername(), credentials.getPassword(), credentials.getNewPassword());
 
+        // create response entity based on success variable
         ResponseEntity<String> responseEntity;
         if (success) {
             responseEntity = ResponseEntity.status(HttpStatus.OK).build();
@@ -41,6 +64,7 @@ public class PasswordChangeController {
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
+        // return response entity
         return  responseEntity;
     }
 }

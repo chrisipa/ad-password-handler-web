@@ -12,6 +12,11 @@ import javax.mail.internet.MimeMessage;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Service class for sending emails.
+ *
+ * @author Christoph Papke (info@papke.it)
+ */
 @Service
 public class MailService {
 
@@ -51,40 +56,54 @@ public class MailService {
     private VelocityService velocityService;
 
     @PostConstruct
-    private void init() {
+    public void init() {
 
+        // create new java mail sender
         mailSender = new JavaMailSenderImpl();
 
-        Properties mailProperties = new Properties();
-        mailProperties.put("mail.smtp.auth", auth);
-        mailProperties.put("mail.smtp.starttls.enable", starttls);
-
-        mailSender.setJavaMailProperties(mailProperties);
+        // set mail sender configuration
         mailSender.setHost(host);
         mailSender.setPort(port);
         mailSender.setProtocol(protocol);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
+        // create java mail properties
+        Properties mailProperties = new Properties();
+        mailProperties.put("mail.smtp.auth", auth);
+        mailProperties.put("mail.smtp.starttls.enable", starttls);
+
+        // set java mail properties
         mailSender.setJavaMailProperties(mailProperties);
     }
 
+    /**
+     * Method for sending an HTML mail.
+     *
+     * @param to - mail recipient
+     * @param variableMap - variable map for substitution
+     */
     public void send(String to, Map variableMap) {
 
+        // create mime message preparator
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
+            @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
 
+                // get mail text by substituting variables in mail template with velocity
                 String text = velocityService.evaluate(templatePath, variableMap);
 
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-                message.setFrom(from);
-                message.setTo(to);
-                message.setSubject(subject);
-                message.setText(text, true);
+                // create message helper
+                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+                messageHelper.setFrom(from);
+                messageHelper.setTo(to);
+                messageHelper.setSubject(subject);
+                messageHelper.setText(text, true);
             }
         };
 
+        // send HTML mail
         mailSender.send(preparator);
     }
 }

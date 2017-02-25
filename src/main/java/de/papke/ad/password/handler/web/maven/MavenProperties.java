@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 /**
  * Maven properties class for accessing project properties.
  *
- * @author Christoph Papke (info@christoph-papke.de)
+ * @author Christoph Papke (info@papke.it)
  */
 @Component
 public class MavenProperties {
@@ -19,15 +19,25 @@ public class MavenProperties {
 
     private ResourceBundle resourceBundle;
 
+    /**
+     * Method for initializing the resource bundle by maven property file.
+     */
     @PostConstruct
-    public void initialize() {
+    public void init() {
         try {
             this.resourceBundle = ResourceBundle.getBundle("maven");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
+    /**
+     * Method for getting a maven property by key.
+     *
+     * @param key - maven property key
+     * @return maven property value
+     */
     public Object get(String key) {
         return resourceBundle.getObject(key);
     }

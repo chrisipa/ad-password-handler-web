@@ -12,6 +12,11 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service class for handling the password expiration of an active directory user.
+ *
+ * @author Christoph Papke (info@papke.it)
+ */
 @Service
 public class PasswordExpirationService {
 
@@ -23,8 +28,8 @@ public class PasswordExpirationService {
     @Value("${password.expiration.user.filter}")
     private String userFilter;
 
-    @Value("${password.expiration.days.till.expire}")
-    private int daysTillExpire;
+    @Value("${password.expiration.days.till.expires}")
+    private int daysTillExpires;
 
     @Autowired
     private MailService mailService;
@@ -37,34 +42,49 @@ public class PasswordExpirationService {
 
         try {
 
-            // calculate days till password expires
+            // get current timestamp
             long now = System.currentTimeMillis();
+
+            // get password max age from active directory
             long maxPwdAge = activeDirectoryService.getMaxPasswordAge();
 
+            // get all active directory users which should be checked by filter string
             for (ActiveDirectoryUser user : activeDirectoryService.getUserList(userFilter)) {
 
+                // get mail address of user
                 String mail = user.getMail();
 
+                // check if mail address is set
                 if (!StringUtils.isEmpty(mail)) {
 
+                    // get sAMAccountName of user
                     String sAMAccountName = user.getsAMAccountName();
+
+                    // check if sAMAccountName is set
                     if (!StringUtils.isEmpty(sAMAccountName)) {
 
+                        // get timestamp of last password change
                         long pwdLastSet = activeDirectoryService.getPasswordLastSet(sAMAccountName);
 
-                        int daysTillPasswordExpires = -1;
+                        // if password max age and timestamp of last password change are set
                         if (maxPwdAge != -1 && pwdLastSet != -1) {
 
-                            long expires = activeDirectoryService.getTimestamp(pwdLastSet + Math.abs(maxPwdAge));
-                            daysTillPasswordExpires = (int) ((expires - now) / 1000 / 60 / 60 / 24);
+                            // get timestamp for password expiration
+                            long expiresTimestamp = activeDirectoryService.getTimestamp(pwdLastSet + Math.abs(maxPwdAge));
 
-                            if (daysTillPasswordExpires <= daysTillExpire) {
+                            // calculate days till password expires
+                            int passwordDaysTillExpires = (int) ((expiresTimestamp - now) / 1000 / 60 / 60 / 24);
 
+                            // send mail if password expires soon
+                            if (passwordDaysTillExpires <= daysTillExpires) {
+
+                                // create variable map for substitution
                                 Map<String, Object> variableMap = new HashMap<>();
                                 variableMap.put("name", user.getName());
                                 variableMap.put("url", applicationUrl);
-                                variableMap.put("days", daysTillPasswordExpires);
+                                variableMap.put("days", passwordDaysTillExpires);
 
+                                // send mail
                                 mailService.send(mail, variableMap);
                             }
                         }

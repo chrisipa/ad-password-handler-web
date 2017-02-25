@@ -14,6 +14,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Service class for changing a password of an active directory user.
+ *
+ * @author Christoph Papke (info@papke.it)
+ */
 @Service
 public class PasswordChangeService {
 
@@ -29,6 +34,11 @@ public class PasswordChangeService {
     @Autowired
     private ActiveDirectoryService activeDirectoryService;
 
+    /**
+     * Method for creating the bash script file for changing the password.
+     *
+     * @return script file handle
+     */
     public File createScriptFile() {
 
         File scriptFile = null;
@@ -36,13 +46,17 @@ public class PasswordChangeService {
 
         try {
 
-            // write out script file an set executable
+            // write out script file
             String scriptFilePath = "/" + SCRIPT_FILE_PREFIX + SCRIPT_FILE_SUFFIX;
             InputStream is = getClass().getResourceAsStream(scriptFilePath);
             scriptFile = File.createTempFile(SCRIPT_FILE_PREFIX, SCRIPT_FILE_SUFFIX);
             fout = new FileOutputStream(scriptFile);
             IOUtils.copy(is, fout);
-            scriptFile.setExecutable(true);
+
+            // make script file executable
+            if (!scriptFile.setExecutable(true)) {
+                LOG.error("Cannot make script file '{}' executable.", scriptFile.getAbsolutePath());
+            }
         }
         catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -61,6 +75,14 @@ public class PasswordChangeService {
         return scriptFile;
     }
 
+    /**
+     * Method for changing the password by calling the bash script file.
+     *
+     * @param username - the name of the user
+     * @param password - the password of the user
+     * @param newPassword - the new password of the user
+     * @return boolean value if changing password was successful
+     */
     public boolean changePassword(String username, String password, String newPassword) {
 
         boolean success = false;
@@ -98,8 +120,9 @@ public class PasswordChangeService {
             LOG.error(e.getMessage(), e);
         }
         finally {
-            if (scriptFile != null) {
-                scriptFile.delete();
+            // remove script file if possible
+            if (scriptFile != null && !scriptFile.delete()) {
+                LOG.error("Script file '{}' could not be deleted. Please remove manually.", scriptFile.getAbsolutePath());
             }
         }
 

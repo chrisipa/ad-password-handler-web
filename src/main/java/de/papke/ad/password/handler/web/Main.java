@@ -8,14 +8,16 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 /**
- * Main class of scripting console application.
+ * Main class of application.
+ *
+ * @author Christoph Papke (info@papke.it)
  */
 @SpringBootApplication
 @EnableScheduling
 public class Main extends SpringBootServletInitializer {
 
     /**
-     * Method for configuring spring boot application
+     * Method for configuring spring boot application.
      *
      * @param application
      * @return
@@ -26,7 +28,7 @@ public class Main extends SpringBootServletInitializer {
     }
 
     /**
-     * Main method
+     * Main method.
      *
      * @param args
      */
