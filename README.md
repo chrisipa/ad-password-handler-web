@@ -6,18 +6,20 @@ AD Password Handler Web
 
 Overview
 --------
-If you have external partners with active directory accounts (e.g. for VPN connections) and password expiration enabled, this tool is for you. It checks the expiration of active directory password and sends a mail to the users with a link to change it:
+If you have external partners with Active Directory accounts (e.g. for VPN connections) and password expiration enabled, this tool is for you. It checks the expiration of Active Directory password and sends a mail to the users with a link to change it:
 
 ![Screenshot](https://raw.githubusercontent.com/chrisipa/ad-password-handler-web/master/public/screenshot_password_change.png)
 
 Features
 ---------
-* Mobile optimized web frontend to change active directory password
-* Scheduler for checking password expiration of active directory users
+* Mobile optimized web frontend to change Active Directory password
+* Scheduler for checking password expiration of Active Directory users
 * Sending HTML mails with a customizable velocity template
 
 Prerequisites
 -------------
+* LDAP interface of the Active Directory must be reachable
+* SMTP server must be available
 * [Docker](https://docs.docker.com/engine/installation/) must be installed
 * [Docker-Compose](https://docs.docker.com/compose/install/) must be installed
 
