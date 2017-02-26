@@ -163,21 +163,7 @@
                                         </fileSets>
                                     </inline>
                                 </assembly>
-                            </build>
-                            <run>
-                                <namingStrategy>alias</namingStrategy>
-                                <ports>
-                                    <port>8080:8080</port>
-                                    <port>8443:8443</port>
-                                </ports>
-                                <env>
-                                    <AD_SERVER_HOST>my.ad.server.host</AD_SERVER_HOST>
-                                    <AD_SERVER_PORT>389</AD_SERVER_PORT>
-                                    <AD_SERVER_BASE_DN>DC=my,DC=domain,DC=grp</AD_SERVER_BASE_DN>
-                                    <AD_SERVER_USER_DN>CN=Name,OU=Group,OU=Users,OU=Organisation,DC=my,DC=domain,DC=grp</AD_SERVER_USER_DN>
-                                    <AD_SERVER_USER_SECRET>Password</AD_SERVER_USER_SECRET>
-                                </env>
-                            </run>
+                            </build>                            
                         </image>
                     </images>
                 </configuration>
