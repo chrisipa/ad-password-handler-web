@@ -62,6 +62,9 @@ public class MailService {
     @Autowired
     private VelocityService velocityService;
 
+    /**
+     * Method for initializing the mail service.
+     */
     @PostConstruct
     public void init() {
 

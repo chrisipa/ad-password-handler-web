@@ -37,6 +37,9 @@ public class PasswordExpirationService {
     @Autowired
     private ActiveDirectoryService activeDirectoryService;
 
+    /**
+     * Scheduler method for sending password expiration mails to active directory users.
+     */
     @Scheduled(cron = "${password.expiration.cron.expression}")
     public void sendPasswordExpiresMails() {
 
