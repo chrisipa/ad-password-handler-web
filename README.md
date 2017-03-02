@@ -36,7 +36,7 @@ Usage
       - 8443:8443
     environment:
       - TZ=Europe/Berlin
-      - ad.server.host=my-mail-server-hostname-or-ip
+      - ad.server.host=my-ad-server-hostname-or-ip
       - ad.server.port=389
       - ad.server.base.dn=DC=my,DC=domain,DC=grp
       - ad.server.user.dn=CN=Name,OU=Group,OU=Users,OU=Organisation,DC=my,DC=domain,DC=grp
