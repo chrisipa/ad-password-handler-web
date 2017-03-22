@@ -1,0 +1,1 @@
+Spring Boot web application to set an Active Directory password and send mails for password expiry.
