@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import de.papke.ad.password.handler.web.model.ActiveDirectoryUser;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Service class for changing a password of an active directory user.
@@ -31,6 +34,9 @@ public class PasswordChangeService {
     @Value("${ad.server.host}")
     private String adServerHost;
 
+    @Value("${password.change.user.filter}")
+    private String userFilter;    
+    
     @Autowired
     private ActiveDirectoryService activeDirectoryService;
 
@@ -79,6 +85,25 @@ public class PasswordChangeService {
 
         return scriptFile;
     }
+    
+    
+    /**
+     * 
+     * 
+     * @param accountName
+     * @return
+     */
+    private boolean isAllowedToChangePassword(String accountName) {
+    	
+    	List<ActiveDirectoryUser> userList = activeDirectoryService.getUserList(userFilter);
+        for (ActiveDirectoryUser user : userList) {
+        	if (user.getsAMAccountName().equals(accountName)) {
+        		return true;
+        	}
+        }
+        
+        return false;
+    }
 
     /**
      * Method for changing the password by calling the bash script file.
@@ -106,23 +131,30 @@ public class PasswordChangeService {
             else {
                 accountName = username;
             }
-
-            // write out change password script as temp file
-            scriptFile = createScriptFile();
-
-            // generate command line for change password script
-            CommandLine cmdLine = new CommandLine(scriptFile);
-            cmdLine.addArgument(accountName);
-            cmdLine.addArgument(adServerHost);
-            cmdLine.addArgument(password);
-            cmdLine.addArgument(newPassword);
-
-            // execute change password script
-            DefaultExecutor executor = new DefaultExecutor();
-            executor.execute(cmdLine);
-
-            // operation was successfull
-            success = true;
+            
+            // check if user is allowed to change the password
+            if (isAllowedToChangePassword(accountName)) {
+            
+	            // write out change password script as temp file
+	            scriptFile = createScriptFile();
+	
+	            // generate command line for change password script
+	            CommandLine cmdLine = new CommandLine(scriptFile);
+	            cmdLine.addArgument(accountName);
+	            cmdLine.addArgument(adServerHost);
+	            cmdLine.addArgument(password);
+	            cmdLine.addArgument(newPassword);
+	
+	            // execute change password script
+	            DefaultExecutor executor = new DefaultExecutor();
+	            executor.execute(cmdLine);
+	
+	            // operation was successfull
+	            success = true;
+            }
+            else {
+            	LOG.error("User with account name '{}' is not allowed to change the password.", accountName);
+            }
         }
         catch (Exception e) {
             LOG.error(e.getMessage(), e);

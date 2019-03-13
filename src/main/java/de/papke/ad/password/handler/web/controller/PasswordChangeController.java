@@ -4,6 +4,7 @@ import de.papke.ad.password.handler.web.maven.MavenProperties;
 import de.papke.ad.password.handler.web.model.Credentials;
 import de.papke.ad.password.handler.web.service.PasswordChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,12 @@ public class PasswordChangeController {
 
     @Autowired
     private MavenProperties mavenProperties;
-
+    
     @Autowired
     private PasswordChangeService passwordChangeService;
+    
+    @Value("${application.title}")
+    private String applicationTitle;
 
     /**
      * Method for creating model and view for index page
@@ -36,7 +40,7 @@ public class PasswordChangeController {
     public String index(Model model) {
 
         // add maven properties to model object
-        model.addAttribute("name", mavenProperties.get("name"));
+        model.addAttribute("name", applicationTitle);
         model.addAttribute("version", mavenProperties.get("version"));
 
         // return view name
