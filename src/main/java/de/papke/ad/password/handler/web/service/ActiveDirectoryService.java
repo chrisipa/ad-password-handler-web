@@ -3,6 +3,8 @@ package de.papke.ad.password.handler.web.service;
 import com.unboundid.asn1.ASN1OctetString;
 import com.unboundid.ldap.sdk.*;
 import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
+import com.unboundid.util.ssl.SSLUtil;
+
 import de.papke.ad.password.handler.web.model.ActiveDirectoryUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Service class for accessing the active directory server via LDAP.
@@ -388,8 +392,15 @@ public class ActiveDirectoryService {
      * @return connection to LDAP server
      * @throws LDAPException
      */
-    private LDAPConnection getLdapConnection() throws LDAPException {
-        return new LDAPConnection(host, port, userDn, userSecret);
+    private LDAPConnection getLdapConnection() throws Exception {
+    	
+    	SSLSocketFactory sslSocketFactory = null;
+    	if (port == 636 || port == 3269) {
+    		SSLUtil sslUtil = new SSLUtil();
+			sslSocketFactory = sslUtil.createSSLSocketFactory();
+    	}
+    	
+        return new LDAPConnection(sslSocketFactory, host, port, userDn, userSecret);
     }
 
     /**
