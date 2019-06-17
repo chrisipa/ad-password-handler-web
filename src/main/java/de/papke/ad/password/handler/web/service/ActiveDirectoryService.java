@@ -51,6 +51,9 @@ public class ActiveDirectoryService {
     @Value("${ad.server.user.secret}")
     private String userSecret;
 
+    @Value("${ad.server.paging.enabled}")
+    private boolean pagingEnabled;
+    
     @Value("${ad.server.elements.per.page}")
     private int elementsPerPage;
 
@@ -209,10 +212,9 @@ public class ActiveDirectoryService {
      * @param searchScope - search scope of the query
      * @param filter - LDAP filter
      * @param attributes - attributes which should be returned
-     * @param paging - use paging for the query or not
      * @return list of search result entries
      */
-    public List<SearchResultEntry> search(String baseDn, SearchScope searchScope, Filter filter, String[] attributes, boolean paging) {
+    public List<SearchResultEntry> search(String baseDn, SearchScope searchScope, Filter filter, String[] attributes) {
 
         List<SearchResultEntry> searchResultEntries = new ArrayList<>();
         LDAPConnection connection = null;
@@ -220,13 +222,13 @@ public class ActiveDirectoryService {
         try {
 
             // logging
-            LOG.info("exceuting LDAP query with baseDn '{}', search scope '{}', filter '{}', attributes '{}' and paging '{}'", baseDn, searchScope, filter, attributes, paging);
+            LOG.info("exceuting LDAP query with baseDn '{}', search scope '{}', filter '{}', attributes '{}' and paging '{}'", baseDn, searchScope, filter, attributes, pagingEnabled);
 
             // get connection to LDAP server
             connection = getLdapConnection();
 
             // whether to use paging or not
-            if (paging) {
+            if (pagingEnabled) {
 
                 ASN1OctetString cookie = null;
 
@@ -355,35 +357,7 @@ public class ActiveDirectoryService {
      * @throws LDAPException
      */
     public List<SearchResultEntry> search(String baseDn, SearchScope searchScope, String filterString, String[] attributes) throws LDAPException {
-        return search(baseDn, searchScope, Filter.create(filterString), attributes, false);
-    }
-
-    /**
-     * Method for executing an LDAP query.
-     *
-     * @param baseDn - base DN of the query
-     * @param searchScope - search scope of the query
-     * @param filter - filter query as string
-     * @param attributes - attributes which should be returned
-     * @return list of search result entries
-     */
-    public List<SearchResultEntry> search(String baseDn, SearchScope searchScope, Filter filter, String[] attributes) {
-        return search(baseDn, searchScope, filter, attributes, false);
-    }
-
-    /**
-     * Method for executing an LDAP query.
-     *
-     * @param baseDn - base DN of the query
-     * @param searchScope - search scope of the query
-     * @param filterString - filter query as string
-     * @param attributes - attributes which should be returned
-     * @param paging - use paging for the query or not
-     * @return list of search result entries
-     * @throws LDAPException
-     */
-    public List<SearchResultEntry> search(String baseDn, SearchScope searchScope, String filterString, String[] attributes, boolean paging) throws LDAPException {
-        return search(baseDn, searchScope, Filter.create(filterString), attributes, paging);
+        return search(baseDn, searchScope, Filter.create(filterString), attributes);
     }
 
     /**

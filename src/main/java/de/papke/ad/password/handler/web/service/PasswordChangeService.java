@@ -88,10 +88,10 @@ public class PasswordChangeService {
     
     
     /**
+     * Method for checking if a user is allowed to change a password
      * 
-     * 
-     * @param accountName
-     * @return
+     * @param accountName - the SAMAccountName of the user
+     * @return boolean value if changing password is allowed
      */
     private boolean isAllowedToChangePassword(String accountName) {
     	
