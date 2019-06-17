@@ -1,5 +1,5 @@
 AD Password Handler Web
-=======
+=======================
 
 [![Build Status](https://papke.it/jenkins/buildStatus/icon?job=ad-password-handler-web)](https://papke.it/jenkins/job/ad-password-handler-web/)
 [![Code Analysis](https://img.shields.io/badge/code%20analysis-available-blue.svg)](https://papke.it/sonar/overview?id=196)
