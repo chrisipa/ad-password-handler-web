@@ -118,7 +118,7 @@
                                 <tags>
                                     <tag>${project.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/tomcat-base:9.0.5</from>
+                                <from>${registry}/${tenant}/tomcat-base:9</from>
                                 <optimise>true</optimise>
                                 <entryPoint>
                                     <exec>
